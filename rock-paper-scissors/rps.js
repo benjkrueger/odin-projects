@@ -26,6 +26,10 @@ function playGame() {
     let humanScore = 0
     let computerScore = 0
 
+    function addTextToParagraph(s) {
+        document.getElementById('p').innerText += "\n" + s
+    }
+
     function playRound(humanChoice, computerChoice) {
         let answer_string = ""
         if ((humanChoice === "rock" && computerChoice === "scissors") ||
@@ -49,10 +53,10 @@ function playGame() {
     for (let i = 0; i < 5; i++) {
         let humanSelection = getHumanChoice()
         let computerSelection = getComputerChoice()
-        playRound(humanSelection, computerSelection)
+        addTextToParagraph(playRound(humanSelection, computerSelection))
         console.log(i)
     }
-    printFinalScore(humanScore, computerScore)
+    addTextToParagraph(printFinalScore(humanScore, computerScore))
 }
 
 
