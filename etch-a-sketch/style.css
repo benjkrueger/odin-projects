@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+html, body {
+    height:100%
+}
+
+#container {
+    display:flex;
+    flex-direction: column;
+    height:100%
+}
+
+#grid_container {
+    flex-direction: column;
+    flex:1;
+}
+
+#grid {
+    display:flex;
+    flex-direction: column;
+    flex:1;
+    align-items: stretch;
+    min-height:400px;
+    min-width:400px;
+    height:100%;
+}
+
+.row {
+    display:flex;
+    flex:1;
+    align-items: stretch;
+}
+
+.cell {
+    display:flex;
+    flex:1;
+    border-style:dotted;
+    border-width:1px;
+    border-color:aliceblue;
+    box-sizing: border-box;
+}
