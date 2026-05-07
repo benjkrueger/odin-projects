@@ -14,6 +14,14 @@ const btn_dct = [
     ["+/-",0,".","="],
 ]
 
+const FUNC_DCT = [
+    [reciprocal, clear, backspace, () => operate("/")],
+    [() => update_input(7), () => update_input(8), () => update_input(9), () => operate("*")],
+    [() => update_input(4), () => update_input(5), () => update_input(6), () => operate("-")],
+    [() => update_input(1), () => update_input(2), () => update_input(3), () => operate("+")],
+    [negate, () => update_input(0), () => update_input("."), equals],
+]
+
 function reciprocal() {
     if (INPUT_VAR !== null) {
         INPUT.value = 1/INPUT.value
@@ -95,13 +103,7 @@ function update_holder(number) {
     console.log("UPDATE HOLDER", HOLDER.value, HELD_VAR, number)
 }
 
-const FUNC_DCT = [
-    [reciprocal, clear, backspace, () => operate("/")],
-    [() => update_input(7), () => update_input(8), () => update_input(9), () => operate("*")],
-    [() => update_input(4), () => update_input(5), () => update_input(6), () => operate("-")],
-    [() => update_input(1), () => update_input(2), () => update_input(3), () => operate("+")],
-    [negate, () => update_input(0), () => update_input("."), equals],
-]
+
 
 function create_button(i, j) {
     let btn = document.createElement('button')
@@ -126,11 +128,23 @@ function create_calculator() {
     }
 }
 
+function handle_typing(key) {
+    console.log(key)
+    if (key === 'Backspace') {backspace()}
+    if (["0","1","2","3","4","5","6","7","8","9"].includes(key)) {update_input(key)}
+    if (key === "c") {clear()}
+    if (key === "r") {reciprocal()}
+    if (key === "n") {negate()}
+    if (key === "=" || key==="Enter") {equals()}
+    if (["+","-","*","/"].includes(key)) {operate(key)}
+}
+
 
 function initialize() {
     INPUT.value = ""
     HOLDER.value = ""
     create_calculator()
+    INPUT.addEventListener('keydown', event => handle_typing(event.key))
 }
 
 initialize()

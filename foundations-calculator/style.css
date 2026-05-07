@@ -1,13 +1,13 @@
-#input {
-    flex-grow:5;
+.input {
+    flex-grow:3;
     flex-basis:0;
 }
 
-#op {
+.op {
     flex:1 0 0;
 }
 
-#holder {
+.holder {
     flex-grow:1;
     flex-basis:0;
 }
