@@ -5,3 +5,7 @@
 h1 {
     font-family:'Century Gothic';
 }
+
+.list_holder {
+    list-style-type:none;
+}
