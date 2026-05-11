@@ -9,3 +9,8 @@ h1 {
 .list_holder {
     list-style-type:none;
 }
+
+ol {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}

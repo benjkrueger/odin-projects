@@ -3,7 +3,7 @@
 //plays sound
 
 
-function initialize_keys() {
+function my_initialize_keys() {
     let keys = document.getElementsByClassName('key')
     let sounds = document.getElementsByClassName('sound')
     
@@ -38,7 +38,28 @@ function initialize_keys() {
     })
 }
 
+function solution_initialize_keys() {
+    function playSound(event) {
+        const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`)
+        const key = document.querySelector(`.key[data-key="${event.keyCode}"]`)
+        if (!audio) return;
+        audio.currentTime = 0;
+        audio.play();
+        key.classList.add('playing')
+    }
+
+    document.addEventListener('keydown', playSound)
+
+    function removeTransition(e) {
+        if (e.propertyName !== 'transform') return;
+        this.classList.remove("playing")
+    }
+
+    const keys = document.querySelectorAll('.key')
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition))
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    initialize_keys()
+    //my_initialize_keys()
+    solution_initialize_keys()
 })
