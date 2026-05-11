@@ -1,0 +1,41 @@
+
+
+/*
+    misc styles, nothing to do with CSS variables
+*/
+
+body {
+    background: #193549;
+    color: white;
+    font-family: 'Century Gothic', 'helvetica neue', sans-serif;
+    font-weight: 100;
+    font-size: 50px;
+}
+
+
+.input-div {
+    display:flex;
+    flex-direction: column;
+}
+
+#library-container {
+    display:flex;
+    flex-direction: row;
+    gap:10px;
+    justify-content: space-evenly;
+    padding:10px;
+    flex-wrap: wrap;
+}
+
+.book {
+    flex:1 1 1;
+    line-height:1;
+    padding: 5px;
+    max-width:400px;
+    display:flex;
+    flex-direction: column;
+}
+
+.book p, .book h5 {
+    margin:.5em;
+}

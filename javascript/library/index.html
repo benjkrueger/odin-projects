@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>The Library</h1>
+    <button command="show-modal" commandfor="my-dialog">Add a Book</button>
+
+    <dialog id="my-dialog">
+        <p>Add a book to the library.</p>
+        <div class="input-div">
+            <label for="title">Title:</label>
+            <input id="title" type="text" placeholder="title">
+            <label for="author">Author:</label>
+            <input id="author" type="text" placeholder="author">
+            <label for="pages">Pages:</label>
+            <input id="pages" type="number" placeholder="0">
+            <label for="read">Have you read this book?:</label>
+            <select id="read">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <button commandfor="my-dialog" command="close">Close</button>
+        <button id="add-book-btn">Add Book</button>
+    </dialog>
+    <div id="library-container">
+
+    </div>
+</body>
+</html>
