@@ -1,0 +1,55 @@
+@font-face {
+    font-family: "aldotheapache";
+    src:
+        url("fonts/AldotheApache.woff2") format("woff2"),
+        url("fonts/AldotheApache.woff") format("woff");
+    font-weight: normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+@font-face {
+    font-family: "matchacih";
+    src:
+        url("fonts/MatchaCih.woff2") format("woff2"),
+        url("fonts/MatchaCih.woff") format("woff");
+    font-weight: normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+html {
+  font-size: 10px;
+  margin: 0;
+  font-family: "aldotheapache", sans-serif;
+}
+
+body {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-shadow: #ffcc00 1px 0 10px;
+}
+
+/* Typography */
+
+h1 {
+  font-size: 3.2rem;
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+
+p {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  word-spacing: 0.6rem;
+  font-family:"matchacih"
+}
+
+* {
+    border-color: red;
+    border-width: 2px;
+    border-style: dotted;
+}
