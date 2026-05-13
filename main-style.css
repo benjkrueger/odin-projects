@@ -12,5 +12,9 @@ h1 {
 
 ol {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+}
+
+a:hover {
+    text-shadow: #ffcc00 1px 0 10px;
 }
