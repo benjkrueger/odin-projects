@@ -18,3 +18,20 @@ ol {
 a:hover {
     text-shadow: #ffcc00 1px 0 10px;
 }
+
+.panels {
+    display:flex;
+    flex-direction: column;
+    flex:5 1 auto;
+    height:100vh;
+    justify-content: center;
+}
+
+.panel {
+    flex:1;
+
+}
+
+.panel:nth-child(2n) {
+    background-color: bisque;
+}
