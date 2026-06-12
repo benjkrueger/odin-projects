@@ -15,6 +15,10 @@ ol {
     grid-template-columns: repeat(6, 1fr);
 }
 
+a {
+    color:DarkGray;
+}
+
 a:hover {
     text-shadow: #ffcc00 1px 0 10px;
 }
@@ -29,9 +33,6 @@ a:hover {
 
 .panel {
     flex:1;
-
+    background: linear-gradient(0deg, CadetBlue, CornflowerBlue)
 }
 
-.panel:nth-child(2n) {
-    background-color: bisque;
-}

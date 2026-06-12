@@ -1,0 +1,33 @@
+body { 
+    max-width: 500px;
+    width:100%;
+    margin: 0 auto;
+}
+
+h1, h3 {
+    display:flex;
+    justify-content: center;
+}
+
+.row {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.cell {
+    flex:1;
+    aspect-ratio:1;
+    font-size:72px;
+    font-weight: bolder;
+
+}
+
+#play_game {
+    display:flex;
+    justify-content: center;
+}
+
+.active_button {
+    background-color:aqua
+}
