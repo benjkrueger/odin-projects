@@ -1,220 +1,177 @@
-function randInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-}
-const getRandomChoice = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-class Gameboard {
-    constructor()  {
-        this.board = [["_","_","_"], ["_","_","_"], ["_","_","_"]]
-        this.EMPTY = "_"
-    }
-    get(x,y) {
-        return this.board[y][x]
-    }
-    is_open(x,y) {
-        console.log(y,x)
-        return this.board[y][x] === this.EMPTY
-    }
-    there_is_open_space_left() {
-        for (const row of this.board) {
-            for (const col of row) {
-                if (col === this.EMPTY) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    get_empty_spaces() {
-        let ret = []
-        for (let i = 0; i < 3; i++) { 
+const EMPTY = ""
+
+function Cell() {
+    let value = EMPTY
+    const setValue = (player) => {value = player}
+    const getValue = () => value
+    const isEmpty = () => value === EMPTY
+    return {setValue, getValue, isEmpty}
+}
+
+function Gameboard() {
+    const board = [[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()]]
+    const getBoard = () => board
+    const getEmptySpots = () => {
+        const ret = []
+        for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                if (this.board[i][j] === "_") {
-                    ret.push([j,i])
+                if (board[i][j].isEmpty()) {
+                    ret.push({x:i, y:j})
                 }
             }
         }
         return ret
     }
-    place(x, y, piece) {
-        if (this.board[y][x] === this.EMPTY) {
-            this.board[y][x] = piece
-            return true
-        }    
-        return false     
+    const setValue = (x,y,player) => {
+        board[y][x].setValue(player)
+    } 
+    const printBoard = () => {
+        const boardWithValues = board.map((row) =>
+            row.map((cell) => cell.getValue())
+        )
+        console.log(boardWithValues)
     }
-    print() {
+    const isEmpty = (x,y) => {
+        return board[y][x].isEmpty()
+    }
+    const trioIsSame = (trio) => {
+        return !trio[0].isEmpty() && trio[0].getValue() === trio[1].getValue() && trio[0].getValue() === trio[2].getValue()
+    }
+    const checkForWin = () => {
         for (let i = 0; i < 3; i++) {
-            console.log(this.board[i])
+            let trio = [board[0][i], board[1][i], board[2][i]]
+            if (trioIsSame(trio)) return true
+            trio =[board[i][0], board[i][1], board[i][2]]
+            if (trioIsSame(trio)) return true
         }
-    }
-    detect_win() {
-        const allEqual = arr => arr.every(val => val === arr[0] && arr[0] !== this.EMPTY)
-        let trio
-        for (let i = 0; i < 3; i++) {
-            trio = this.board[i]
-            if (allEqual(trio)) {return trio[0]}
-
-            trio = [this.board[0][i],this.board[1][i],this.board[2][i]]
-            if (allEqual(trio)) {return trio[0]}
-        } 
-        trio = [this.board[0][0],this.board[1][1],this.board[2][2]]
-        if (allEqual(trio)) {return trio[0]}
-        trio = [this.board[0][2],this.board[1][1],this.board[2][0]]
-        if (allEqual(trio)) {return trio[0]}
+        let trio = [board[0][0], board[1][1], board[2][2]]
+        if (trioIsSame(trio)) return true
+        trio = [board[0][0], board[1][1], board[2][2]]
+        if (trioIsSame(trio)) return true
         return false
     }
+    const reset = () => {
+        for (row of board) {
+            for (cell of row) {
+                cell.setValue(EMPTY)
+            }
+        }
+    }
+    return {getBoard, setValue, printBoard, isEmpty, getEmptySpots, checkForWin, reset}
 }
 
-class Player {
-    constructor(team) {
-        this.team = team
-        this.is_human = false
+function GameController(player1name="Player 1",player2name="Player 2") {
+    const board = Gameboard()
+    const players = [{name:player1name,value:"X",ai:false},{name:player2name,value:"O",ai:false}]
+    let activePlayer = players[0]
+    const switchTurn = () => {activePlayer = activePlayer === players[0] ? players[1] : players[0]}
+    const getActivePlayer = () => activePlayer
+    const setPlayerAI = (player_number, is_ai) => {
+        players[player_number].ai = is_ai
+        console.log(players)
+    } 
+    const printNewRound = () => {
+        board.printBoard()
+        console.log(`${getActivePlayer().name}'s turn`)
     }
-
-    take_auto_turn(board) {
-        let possible_moves = board.get_empty_spaces()
-        let valid_move = false
-        let x, y
-        do {
-            let move = getRandomChoice(possible_moves)
-            console.log(move)
-            x = move[0]
-            y = move[1]
-            valid_move = board.place(x, y, this.team)
-            console.log(x, y)
-        } while (!valid_move)
-        console.log(`${this.team} places at ${x}, ${y}`)
-        return [x,y]
-    }
-
-    take_click_turn(board,x,y) {
-        board.place(x,y, this.team)
-        console.log(`${this.team} places at ${x}, ${y}`)
-    }
-
-    set_human(b) {
-        this.is_human = b
-    }
-}
-
-class Game {
-    constructor() {
-        this.board = new Gameboard
-        this.display_board = document.getElementById("board")
-        this.players = [new Player("X"), new Player("O")]
-        this.turn = randInt(0,1)
-    }
-
-    set_player_ai(i, b) {
-        this.players[i].set_human(b)
-    }
-
-    next_player() {
-        this.turn = this.turn === 0 ? 1 : 0
-        console.log(!this.players[this.turn].is_human)
-        if (!this.players[this.turn].is_human) {
-            this.take_auto_turn()
+    const placePiece = (x,y) => {
+        if (!board.checkForWin() && board.isEmpty(x,y)) {
+            console.log(`${getActivePlayer().name} places at ${x}, ${y}`)
+            board.setValue(x,y,activePlayer.value)
+            return true
         }
+        return false
     }
+    const makeAIMove = () => {
+        const coords = board.getEmptySpots()
+        const choice = coords[Math.floor(Math.random() * coords.length)]
 
-    set_display_board(x, y, team) {
-        this.display_board.children[y].children[y].textContent = team
     }
+    const reset = () => {board.reset()}
 
-    take_auto_turn() {
-        if (this.board.there_is_open_space_left()) {
-            const coords = this.players[this.turn].take_auto_turn(this.board)
-            this.set_display_board(coords[0], coords[1], this.players[this.turn].team)
-            this.board.print()
-            this.next_player()
-            
-        }
-    }
-
-    take_click_turn(x, y) {
-        if ( this.board.detect_win()) {
-            return
-        }
-        if (this.board.is_open(x,y)) {
-            this.players[this.turn].take_click_turn(this.board,x,y)
-            this.board.print()
-            this.next_player()
+    const playRound = (x,y) => {
+        if (placePiece(x,y)) {
+            if (board.checkForWin()) {
+                return true
+            }
+            switchTurn()
+            printNewRound()
+            if (activePlayer.ai) {
+                makeAIMove()
+                switchTurn()
+            } 
         }
         
     }
-
-    play_game() {
-        while (this.board.there_is_open_space_left()) {
-            let player = this.players[this.turn]
-            this.take_auto_turn()
-            let detect_win = this.board.detect_win()
-            if (detect_win !== false) {
-                console.log(`Player ${detect_win} has won.`)
-                return
-            }
-        }
-        console.log("Cats Game!")
-    }
+    return {playRound,setPlayerAI,getActivePlayer,reset,getBoard:board.getBoard}
 }
 
-function generate_player_buttons(game) {
-    const div_player1 = document.getElementById("div_player1")
-    const div_player2 = document.getElementById("div_player2")
-    const human_button1 = document.createElement("button")
-    const ai_button1 = document.createElement("button")
-    const human_button2 = document.createElement("button")
-    const ai_button2 = document.createElement("button")
-    human_button1.textContent = "Human"
-    human_button2.textContent = "Human"
-    ai_button1.textContent = "AI"
-    ai_button2.textContent = "AI"
-    human_button1.addEventListener("click", () => {
-        human_button1.classList.add("active_button")
-        ai_button1.classList.remove("active_button")
-        game.set_player_ai(0,true)
-    })
-    human_button2.addEventListener("click", () => {
-        human_button2.classList.add("active_button")
-        ai_button2.classList.remove("active_button")
-        game.set_player_ai(1,true)
-    })
-    ai_button1.addEventListener("click", () => {
-        ai_button1.classList.add("active_button")
-        human_button1.classList.remove("active_button")
-        game.set_player_ai(0,false)
-    })
-    ai_button2.addEventListener("click", () => {
-        ai_button2.classList.add("active_button")
-        human_button2.classList.remove("active_button")
-        game.set_player_ai(1,false)
-    })
-    div_player1.appendChild(human_button1)
-    div_player1.appendChild(ai_button1)
-    div_player2.appendChild(human_button2)
-    div_player2.appendChild(ai_button2)
-}
+function ScreenController() {
+    const game = GameController()
+    const messageDiv = document.getElementById("message")
+    const boardDiv = document.getElementById("board")
+    const player1Div = document.getElementById("div_player1")
+    const player2Div = document.getElementById("div_player2")
 
-function generate_board(game) {
-    board = document.getElementById("board") // row cel cel cel
-    for (let i = 0; i < 3; i++) { 
-        const row = document.createElement("div")
-        row.classList.add("row")
-        for (let j = 0; j < 3; j++) {
-            const cell = document.createElement("button")
-            cell.classList.add("cell")
-            cell.addEventListener("click", () => {
-                game.take_click_turn(j,i)
-                cell.textContent = game.board.get(j, i) === "_" ? "" : game.board.get(j, i)
+    const updateScreen = () => {
+        boardDiv.textContent = ""
+        const board = game.getBoard()
+        const activePlayer = game.getActivePlayer()
+        messageDiv.textContent = `${activePlayer.name}'s turn`
+
+        board.forEach((row, i) => {
+            const rowDiv = document.createElement("div")
+            rowDiv.classList.add("row")
+            row.forEach((cell, j) => {
+                const cellButton = document.createElement("button")
+                cellButton.classList.add("cell")
+                cellButton.dataset.x = j
+                cellButton.dataset.y = i
+                cellButton.textContent = cell.getValue()
+                rowDiv.appendChild(cellButton)
             })
-            row.appendChild(cell)
+            boardDiv.appendChild(rowDiv)
+        })
+    }
+
+
+    function handlePlayerButton(e) {
+
+    }
+
+    const generateButtons = () => {
+        const playGameButton = document.getElementById("play_game")
+        playGameButton.addEventListener("click", () => {game.reset(); updateScreen();})
+        const playerDivs = [player1Div, player2Div]
+        for (let i = 0; i < 2; i++) {
+            const rowDiv = document.createElement("div")
+            rowDiv.classList.add("row")
+            const button1 = document.createElement("button")
+            button1.textContent = "Human"
+            const button2 = document.createElement("button")
+            button2.textContent = "AI"
+            button1.addEventListener("click", game.setPlayerAI(i, false))
+            button2.addEventListener("click", game.setPlayerAI(i, true))
+            rowDiv.appendChild(button1)
+            rowDiv.appendChild(button2)
+            playerDivs[i].appendChild(rowDiv)
         }
-        board.appendChild(row)
-    } 
+    }
+    
+    
+
+
+    function clickHandlerBoard(e) {
+        const selectedSquare = {x:e.target.dataset.x, y:e.target.dataset.y}
+        if (!selectedSquare) return
+        console.log(selectedSquare)
+        game.playRound(selectedSquare.x, selectedSquare.y)
+        updateScreen()
+    }
+    boardDiv.addEventListener("click", clickHandlerBoard)
+    generateButtons()
+    updateScreen()
 }
 
-
-let g = new Game
-generate_player_buttons(g)
-generate_board(g)
-//g.play_game()
+ScreenController()
