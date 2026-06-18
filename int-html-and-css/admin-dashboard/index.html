@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar-left">
+            <div id="logo">
+                <img class="svg" src="./images/star-face.svg">
+                <h2>Dashboard</h2>
+            </div>
+            <ul>
+                <li>
+                    <img class="svg" src="./images/home.svg">
+                    Home
+                </li>
+                <li>
+                    <img class="svg" src="./images/card-account-details-outline.svg">
+                    Profile
+                </li>
+                <li>
+                    <img class="svg" src="./images/message-reply.svg">
+                    Messages
+                </li>
+                <li>
+                    <img class="svg" src="./images/clock-time-three-outline.svg">
+                    History
+                </li>
+                <li>
+                    <img class="svg" src="./images/file-document-multiple-outline.svg">
+                    Tasks
+                </li>
+                <li>
+                    <img class="svg" src="./images/account-group.svg">
+                    Communities
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img class="svg" src="./images/cog.svg">
+                    Settings
+                </li>
+                <li>
+                    <img class="svg" src="./images/help-box-outline.svg">
+                    Support
+                </li>
+                <li>
+                    <img class="svg" src="./images/shield-check.svg">
+                    Privacy
+                </li>
+            </ul>
+        </div>
+        <div id="header">
+            <div class="row">
+                <input type="text" id="search-bar">
+                
+                <div id="user">
+                    <img class="svg small-icon" src="./images/bell-ring-outline.svg">
+                    <img class="svg medium-icon" src="./images/robot-love.svg">
+                    <p>Morgan Oakley</p>
+                </div>
+            </div>
+            <div class="row-subheader">
+                <img class="svg big-icon" src="./images/robot-love.svg">
+                <div>
+                    <p>Hi there,</p>
+                    <p><strong>Morgan Oakley (@morgan)</strong></p>
+                </div>
+                <div class="row">
+                    <button>New</button>
+                    <button>Upload</button>
+                    <button>Share</button>
+                </div>
+            </div>
+        </div>
+        <div id="projects">
+            <h3>Your Projects</h3>
+        </div>
+        <div id="sidebar-right">
+            <div id="announcements">announcements</div>
+            <div id="trending">trending</div>
+        </div>
+        
+    </div>
+</body>
+</html>
