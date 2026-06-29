@@ -1,3 +1,42 @@
 html, body {
     margin: 0;
-  }
+}
+
+#toolbar {
+  display:flex;
+  justify-content: space-between;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+#colorCanvas {
+  height: 100px;
+  width: 100%;
+}
+
+#currentColor {
+  width:100px;
+  height:100px;
+  background-color: #000000;
+  text-align: center;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+
+.magic-button {
+  background-color: gray;
+  transition: background-color 0.3s ease;
+}
+
+.magic-button.active {
+  background-color: red;
+}
+
+#draw {
+}
