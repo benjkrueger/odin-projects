@@ -14,66 +14,77 @@
     <div id="container">
         <div id="sidebar-left">
             <div id="logo">
-                <img class="svg" src="./images/star-face.svg">
+                <img class="svg-white" src="./images/star-face.svg">
                 <h2>Dashboard</h2>
             </div>
             <ul>
                 <li>
-                    <img class="svg" src="./images/home.svg">
+                    <img class="svg-white" src="./images/home.svg">
                     Home
                 </li>
                 <li>
-                    <img class="svg" src="./images/card-account-details-outline.svg">
+                    <img class="svg-white" src="./images/card-account-details-outline.svg">
                     Profile
                 </li>
                 <li>
-                    <img class="svg" src="./images/message-reply.svg">
+                    <img class="svg-white" src="./images/message-reply.svg">
                     Messages
                 </li>
                 <li>
-                    <img class="svg" src="./images/clock-time-three-outline.svg">
+                    <img class="svg-white" src="./images/clock-time-three-outline.svg">
                     History
                 </li>
                 <li>
-                    <img class="svg" src="./images/file-document-multiple-outline.svg">
+                    <img class="svg-white" src="./images/file-document-multiple-outline.svg">
                     Tasks
                 </li>
                 <li>
-                    <img class="svg" src="./images/account-group.svg">
+                    <img class="svg-white" src="./images/account-group.svg">
                     Communities
                 </li>
             </ul>
             <ul>
                 <li>
-                    <img class="svg" src="./images/cog.svg">
+                    <img class="svg-white" src="./images/cog.svg">
                     Settings
                 </li>
                 <li>
-                    <img class="svg" src="./images/help-box-outline.svg">
+                    <img class="svg-white" src="./images/help-box-outline.svg">
                     Support
                 </li>
                 <li>
-                    <img class="svg" src="./images/shield-check.svg">
+                    <img class="svg-white" src="./images/shield-check.svg">
                     Privacy
                 </li>
             </ul>
         </div>
         <div id="header">
-            <div class="row">
-                <input type="text" id="search-bar">
-                
+            <div class="row-header">
+                <div class="searchbox row">
+                    <img class="svg small-icon" id="magnify" src="./images/magnify.svg">
+                    <input
+                        aria-label="Search for a place on the map"
+                        autocomplete="off"
+                        inputmode="search"
+                        placeholder=""
+                        type="search"
+                    />
+                    <img class="svg small-icon" id="bell" src="./images/bell-ring-outline.svg">
+                </div>
                 <div id="user">
-                    <img class="svg small-icon" src="./images/bell-ring-outline.svg">
                     <img class="svg medium-icon" src="./images/robot-love.svg">
                     <p>Morgan Oakley</p>
                 </div>
             </div>
             <div class="row-subheader">
-                <img class="svg big-icon" src="./images/robot-love.svg">
-                <div>
-                    <p>Hi there,</p>
-                    <p><strong>Morgan Oakley (@morgan)</strong></p>
+                <div class="row greeting">
+                    <img class="svg big-icon" src="./images/robot-love.svg">
+                    <div>
+                        <p id="hi-there">Hi there,</p>
+                        <p class="user-name"><strong>Morgan Oakley (@morgan)</strong></p>
+                    </div>
                 </div>
+                
                 <div class="row">
                     <button>New</button>
                     <button>Upload</button>
@@ -83,10 +94,124 @@
         </div>
         <div id="projects">
             <h3>Your Projects</h3>
+            <div id="project-container">
+                <div class="project-item">
+                    <h4>Super Cool Project</h4>
+                    <p>Compost ugh dream pop birria offill breadcrumbing I think you should leave mezcal big mood sustainable JOMO literally. Raclette echo park mixtape cliche spritz, man bun nineties viral post-rock skateboard ashwagandha lion's mane freire kogi. Sambas le corbusier rams, claire saffitz signet no wave parasocial PBR&B venmo gorpcore metrograph gut health. Lynch cacio e pepe fitzcarraldo pitchfork biohack salvia bandcamp breathwork lion's mane nervous system kombucha caviar bump booktok car seat headrest. PBR&B hashtag indie sleaze lacto-ferment poke roaster etsy fitzcarraldo microdosing mushrooms varda salvia. Vibecession yo la tengo DSA, gawker bruh la jetée meditation occupy seitan XOXO.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h4>Less Cool Project</h4>
+                    <p>Neutral milk hotel vape iceland gravel bike, kettlebell mukbang aesthetic. Health goth new balance irony occupy before they sold out hairpin. YOLO stereolab beard cloud bread akerman, blog roaster mercury retrograde ottessa moshfegh selfies JOMO. Stumptown lacto-ferment koji caviar bump food truck tote bag oyster hour dream pop hoodie skateboard.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h4>Impossible App</h4>
+                    <p>Red light therapy fitzcarraldo le corbusier are.na jacobin bandcamp didion claire denis portland. Coloring book gorpcore tousled, four tet attachment style banh mi woke iykyk. Visible mending biohack taiyaki fashion axe car seat headrest tacos. Knoll etsy lockwood sohla el-waylly, aesthetic braun birria authentic bicycle rights ari aster.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h4>Easy Peasy App</h4>
+                    <p>Biohack cold-pressed braun issey miyake needle felting ice bath etsy super 8 artisan ari aster vegan. Cold plunge beard meditation black trumpet vaporware. Bone broth cray unicorn breathwork four dollar toast trust fund tarkovsky cornhole visible mending. Band tee mlkshk jawn I think you should leave street art. Literally conservas gluten-free miso yuzu, doomer tufting unicorn bouldering bluesky banh mi. Koji bushwick hipster runoff claire saffitz mood board af conservas imposter syndrome soft launch dirtbag cold-pressed pok pok lyft parasocial direct trade. Mood board try-hard sus, tattooed situationship adaptogen jade roller blue bottle caviar bump nakashima literally imposter syndrome in this economy bluesky.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h4>Ad Blocker</h4>
+                    <p>Farm-to-table put a bird on it shrub lynch aesthetic mlkshk. Birria le corbusier black garlic meh tufting, try-hard jade roller booktok fit swag etsy decolonize shakshuka comme des garçons echo park. Chronically online n+1 vinyl farm-to-table chartreuse. Subway tile offal vinyl stumptown, schlitz nineties JOMO tattooed cassavetes. Ashwagandha literally poke, iPhone migas intermittent fasting I think you should leave post-ironic jawn tacos tarot pull viral. Enneagram oyster hour affogato mezcal cliche kitsch, wabi-sabi canon event mustache zines.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+                <div class="project-item">
+                    <h4>Money Maker</h4>
+                    <p>Slugging ice bath locavore blue bottle. IPhone vegan mid-century noguchi ayahuasca ego death. Harissa new balance supreme pok pok, granny square cortado listening bar angela davis waistcoat hammock bone broth venmo selvage. Le corbusier girl dinner mushroom coffee no wave portland sustainable. Moka pot organic art party pickleback. Duck fat sufjan compost, polycule 8-bit vexillologist church-key crudo furikake ugh jade roller cassavetes mixtape shakshuka four tet. Bode dog dad sartorial af listicle.</p>
+                    <div class="row-icons">
+                        <img class="svg small-icon" src="./images/star-plus-outline.svg">
+                        <img class="svg small-icon" src="./images/eye-plus-outline.svg">
+                        <img class="svg small-icon rotate" src="./images/share-variant-outline.svg">
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="sidebar-right">
-            <div id="announcements">announcements</div>
-            <div id="trending">trending</div>
+            <div id="announcements">
+                <h3>Announcements</h3>
+                <div id="announcement-container">
+                    <div class="announcement-item">
+                        <h5>Site Maintenance</h5>
+                        <p>Compost ugh dream pop birria offill breadcrumbing I think you should leave mezcal big mood sustainable JOMO literally. Raclette echo park mixtape cliche spritz, man bun nineties viral post-rock skateboard ashwagandha lion's mane freire kogi. Sambas le corbusier rams, claire saffitz signet no wave parasocial PBR&B venmo gorpcore metrograph gut health. Lynch cacio e pepe fitzcarraldo pitchfork biohack salvia bandcamp breathwork lion's mane nervous system kombucha caviar bump booktok car seat headrest. PBR&B hashtag indie sleaze lacto-ferment poke roaster etsy fitzcarraldo microdosing mushrooms varda salvia. Vibecession yo la tengo DSA, gawker bruh la jetée meditation occupy seitan XOXO.</p>
+                    </div>
+                    <hr>
+                    <div class="announcement-item">
+                        <h5>Community Share Day</h5>
+                        <p>Compost ugh dream pop birria offill breadcrumbing I think you should leave mezcal big mood sustainable JOMO literally. Raclette echo park mixtape cliche spritz, man bun nineties viral post-rock skateboard ashwagandha lion's mane freire kogi. Sambas le corbusier rams, claire saffitz signet no wave parasocial PBR&B venmo gorpcore metrograph gut health. Lynch cacio e pepe fitzcarraldo pitchfork biohack salvia bandcamp breathwork lion's mane nervous system kombucha caviar bump booktok car seat headrest. PBR&B hashtag indie sleaze lacto-ferment poke roaster etsy fitzcarraldo microdosing mushrooms varda salvia. Vibecession yo la tengo DSA, gawker bruh la jetée meditation occupy seitan XOXO.</p>
+                    </div>
+                    <hr>
+                    <div class="announcement-item">
+                        <h5>Updated Privacy Policy</h5>
+                        <p>Compost ugh dream pop birria offill breadcrumbing I think you should leave mezcal big mood sustainable JOMO literally. Raclette echo park mixtape cliche spritz, man bun nineties viral post-rock skateboard ashwagandha lion's mane freire kogi. Sambas le corbusier rams, claire saffitz signet no wave parasocial PBR&B venmo gorpcore metrograph gut health. Lynch cacio e pepe fitzcarraldo pitchfork biohack salvia bandcamp breathwork lion's mane nervous system kombucha caviar bump booktok car seat headrest. PBR&B hashtag indie sleaze lacto-ferment poke roaster etsy fitzcarraldo microdosing mushrooms varda salvia. Vibecession yo la tengo DSA, gawker bruh la jetée meditation occupy seitan XOXO.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="trending">
+                <h3>Trending</h3>
+                <div id="trending-container">
+                    <div class="trending-item">
+                        <div class="trending-row">
+                            <img class="svg small-icon" src="./images/robot-love.svg">
+                            <div>
+                                <h5>@tegan</h5>
+                                <p>World Peace Builder</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-row">
+                            <img class="svg small-icon" src="./images/robot-love.svg">
+                            <div>
+                                <h5>@morgan</h5>
+                                <p>Super Cool Project</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-row">
+                            <img class="svg small-icon" src="./images/robot-love.svg">
+                            <div>
+                                <h5>@kendall</h5>
+                                <p>Life Changing App</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-row">
+                            <img class="svg small-icon" src="./images/robot-love.svg">
+                            <div>
+                                <h5>@alex</h5>
+                                <p>No Traffic Maker</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
     </div>
