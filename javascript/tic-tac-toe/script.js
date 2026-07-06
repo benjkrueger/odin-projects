@@ -9,14 +9,17 @@ function Cell() {
     return {setValue, getValue, isEmpty}
 }
 
-function Gameboard() {
-    const board = [[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()]]
+function Gameboard(new_board=[[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()],[Cell(), Cell(), Cell()]]) {
+    const board = new_board
     const getBoard = () => board
+    const copyBoard = () => {
+        return Gameboard(board)
+    }
     const getEmptySpots = () => {
         const ret = []
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                if (board[i][j].isEmpty()) {
+                if (board[j][i].isEmpty()) {
                     ret.push({x:i, y:j})
                 }
             }
@@ -36,20 +39,30 @@ function Gameboard() {
         return board[y][x].isEmpty()
     }
     const trioIsSame = (trio) => {
+        
         return !trio[0].isEmpty() && trio[0].getValue() === trio[1].getValue() && trio[0].getValue() === trio[2].getValue()
     }
     const checkForWin = () => {
         for (let i = 0; i < 3; i++) {
             let trio = [board[0][i], board[1][i], board[2][i]]
-            if (trioIsSame(trio)) return true
+            if (trioIsSame(trio)) return {"done":true, winner:board[0][i].getValue()}
             trio =[board[i][0], board[i][1], board[i][2]]
-            if (trioIsSame(trio)) return true
+            if (trioIsSame(trio)) return {"done":true, winner:board[i][0].getValue()}
         }
         let trio = [board[0][0], board[1][1], board[2][2]]
-        if (trioIsSame(trio)) return true
-        trio = [board[0][0], board[1][1], board[2][2]]
-        if (trioIsSame(trio)) return true
-        return false
+        if (trioIsSame(trio)) return {"done":true, winner:board[0][0].getValue()}
+        trio = [board[0][2], board[1][1], board[2][0]]
+        if (trioIsSame(trio)) return {"done":true, winner:board[2][0].getValue()}
+        let board_is_full = true
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j].isEmpty()) {board_is_full = false; break;}
+            }
+        }
+        if (board_is_full) {
+            return {"done":true, winner:"none"}
+        }
+        return {"done":false, winner:"none"}
     }
     const reset = () => {
         for (row of board) {
@@ -58,14 +71,54 @@ function Gameboard() {
             }
         }
     }
-    return {getBoard, setValue, printBoard, isEmpty, getEmptySpots, checkForWin, reset}
+    const getUtility = (player_value) => {     
+        const winner = checkForWin().winner
+        if (winner === player_value) {return 100} 
+        else if (winner === "none") {return 0} 
+        else {return -100}
+    }
+
+    const getMinMaxMove = (player) => {
+        coords = getEmptySpots()
+        for (const coord of coords) {
+            console.log(coord.x, coord.y)
+            const test_board = copyBoard()
+            test_board.setValue(coord.x, coord.y, player)
+            console.log(test_board.getUtility(player))
+        }
+    } 
+
+    return {getUtility, getMinMaxMove, getBoard, setValue, printBoard, isEmpty, getEmptySpots, checkForWin, reset}
 }
 
 function GameController(player1name="Player 1",player2name="Player 2") {
+    const STATES = ["WAITING", "AI", "HUMAN"]
     const board = Gameboard()
     const players = [{name:player1name,value:"X",ai:false},{name:player2name,value:"O",ai:false}]
     let activePlayer = players[0]
-    const switchTurn = () => {activePlayer = activePlayer === players[0] ? players[1] : players[0]}
+    let state = STATES[0]
+    let turn = 0
+
+    const getState = () => {return state}
+
+    const switchTurn = () => {
+        turn++
+        if (turn > 12) {
+            state = "WAITING"; return;
+        }
+        console.log("SWITCH TURN", turn)
+        
+        const win = board.checkForWin()
+        console.log(win)
+        if (win.done) {state = "WAITING"; activeplayer = players[0]; return;}
+        activePlayer = activePlayer === players[0] ? players[1] : players[0]
+        if (activePlayer.ai) {
+            state = "AI"
+            makeAIMove()
+        } else if (!activePlayer.ai) {
+            state = "HUMAN"
+        }
+    }
     const getActivePlayer = () => activePlayer
     const setPlayerAI = (player_number, is_ai) => {
         players[player_number].ai = is_ai
@@ -76,35 +129,77 @@ function GameController(player1name="Player 1",player2name="Player 2") {
         console.log(`${getActivePlayer().name}'s turn`)
     }
     const placePiece = (x,y) => {
-        if (!board.checkForWin() && board.isEmpty(x,y)) {
+        if (!board.checkForWin().done && board.isEmpty(x,y)) {
             console.log(`${getActivePlayer().name} places at ${x}, ${y}`)
             board.setValue(x,y,activePlayer.value)
             return true
         }
         return false
     }
+
+    const getRandomMove = () => {
+        const coords = board.getEmptySpots()
+        return coords[Math.floor(Math.random() * coords.length)]
+    }
+
+    const getMinmaxMove = () => {
+        const utility = board.getMinMaxMove(activePlayer.value)
+
+    }
+
     const makeAIMove = () => {
         const coords = board.getEmptySpots()
-        const choice = coords[Math.floor(Math.random() * coords.length)]
-
+        //getMinmaxMove()
+        const choice = getRandomMove()
+        placePiece(choice.x, choice.y)
+        const win = board.checkForWin()
+        if (win.done) {
+            state = "WAITING"
+            console.log("WIN", win)
+            return true
+        }
+        switchTurn()
     }
-    const reset = () => {board.reset()}
+    const reset = () => {
+        turn = 0
+        board.reset()
+        state = activePlayer.ai ? "AI" : "HUMAN"
+        console.log(state)
+        if (state === "AI") {
+            makeAIMove()
+        }
+    }
 
     const playRound = (x,y) => {
-        if (placePiece(x,y)) {
-            if (board.checkForWin()) {
-                return true
-            }
-            switchTurn()
-            printNewRound()
-            if (activePlayer.ai) {
-                makeAIMove()
+        if (state === "HUMAN") {
+            if (placePiece(x,y)) {
+                const win = board.checkForWin()
+                console.log(win) 
+                if (win.done) {
+                    state = "WAITING"
+                    console.log("WIN")
+                    return true
+                }
                 switchTurn()
-            } 
-        }
-        
+                printNewRound()
+            }
+        } 
+        console.log(x,y,"Play Round", activePlayer)
     }
-    return {playRound,setPlayerAI,getActivePlayer,reset,getBoard:board.getBoard}
+
+    const getWinString = () => {
+        const win = board.checkForWin()
+        if (!win.done) {
+            return "Start the game already!"
+        } else {
+            if (win.winner === "none") {
+                return "Cat's Game!"
+            }
+            return win.winner + " is the winner!"
+        }
+    }
+
+    return {getWinString,getState,playRound,setPlayerAI,getActivePlayer,reset,getBoard:board.getBoard}
 }
 
 function ScreenController() {
@@ -118,7 +213,15 @@ function ScreenController() {
         boardDiv.textContent = ""
         const board = game.getBoard()
         const activePlayer = game.getActivePlayer()
-        messageDiv.textContent = `${activePlayer.name}'s turn`
+        const state = game.getState()
+        console.log(state)
+        if (state !== "WAITING") {
+            messageDiv.textContent = `${activePlayer.name}'s turn`
+        } else {
+            messageDiv.textContent = `${game.getWinString()}`
+        }
+        
+
 
         board.forEach((row, i) => {
             const rowDiv = document.createElement("div")
@@ -142,7 +245,10 @@ function ScreenController() {
 
     const generateButtons = () => {
         const playGameButton = document.getElementById("play_game")
-        playGameButton.addEventListener("click", () => {game.reset(); updateScreen();})
+        playGameButton.addEventListener("click", () => {
+            game.reset()
+            updateScreen()
+        })
         const playerDivs = [player1Div, player2Div]
         for (let i = 0; i < 2; i++) {
             const rowDiv = document.createElement("div")
@@ -151,17 +257,23 @@ function ScreenController() {
             button1.textContent = "Human"
             const button2 = document.createElement("button")
             button2.textContent = "AI"
-            button1.addEventListener("click", game.setPlayerAI(i, false))
-            button2.addEventListener("click", game.setPlayerAI(i, true))
+            button1.addEventListener("click", () => {
+                game.setPlayerAI(i, false)
+                button1.classList.add('active_button')
+                button2.classList.remove('active_button')
+            })
+            button2.addEventListener("click", () => {
+                game.setPlayerAI(i, true)
+                button1.classList.remove('active_button')
+                button2.classList.add('active_button')
+            })
+            button2.click()
             rowDiv.appendChild(button1)
             rowDiv.appendChild(button2)
             playerDivs[i].appendChild(rowDiv)
         }
     }
     
-    
-
-
     function clickHandlerBoard(e) {
         const selectedSquare = {x:e.target.dataset.x, y:e.target.dataset.y}
         if (!selectedSquare) return
@@ -172,6 +284,7 @@ function ScreenController() {
     boardDiv.addEventListener("click", clickHandlerBoard)
     generateButtons()
     updateScreen()
+    setInterval(updateScreen, 1000)
 }
 
 ScreenController()
