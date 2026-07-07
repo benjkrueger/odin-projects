@@ -143,6 +143,7 @@ function GameController(player1name="Player 1",player2name="Player 2") {
     }
 
     const getMinmaxMove = () => {
+        //https://blog.aaronccwong.com/2018/i-created-an-ai-that-beats-me-at-tic-tac-toe/
         const utility = board.getMinMaxMove(activePlayer.value)
 
     }
