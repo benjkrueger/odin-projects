@@ -8,10 +8,10 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="panels">
+    <div class="rows">
         <h1>The Odin Project Projects</h1>
     
-        <details class="panel">
+        <details class="row">
             <summary>Foundations</summary>
             <li class="list_holder"></li><ul>
                 <li><a href="foundations/odin-recipes/index.html">Odin Recipes</a></li>
@@ -40,7 +40,7 @@
                 <li><a href="foundations/foundations-calculator/index.html">Calculator</a></li>
             </ul></li>
         </details>
-        <details class="panel" open>
+        <details class="row" open>
             <summary>Javascript30</summary>
             <li class="list_holder"><ol>
                 <li><a href="js30/01 - Javascript Drum Kit/index.html">JS Drum Kit</a></li>
@@ -55,7 +55,8 @@
                 <li><a href="js30/10 - Hold Shift and Check Checkboxes/index.html">Hold Shift and Check Checkboxes</a></li>
             </ol>
         </details>
-        <details class="panel">
+        <div class = "row flex-row">
+            <details class="flex-row-member">
             <summary>Intermediate HTML/CSS</summary>
             <li class="list_holder"><ul>
                 <li><a href="int-html-and-css/web-font/web-font-start.html">web-font</a></li>
@@ -66,7 +67,7 @@
                 <li><a href="int-html-and-css/admin-dashboard/index.html">Admin Dashboard</a></li>
             </ul>
         </details>
-        <details class="panel" open>
+        <details class="flex-row-member" open>
             <summary>Advanced HTML/CSS</summary>
             <li class="list_holder"><ul>
                 <li><a href="adv-html-and-css/01-button-hover/index.html">Button Hover</a></li>
@@ -74,8 +75,10 @@
                 <li><a href="adv-html-and-css/03-dropdown-menu/index.html">Dropdown Menu</a></li>
             </ul>
         </details>
-        <details class="panel" open>
-            <summary>Javascript Fullstack</summary>
+        </div>
+        
+        <details class="row" open>
+            <summary>Javascript</summary>
             <li class="list_holder"><ul>
                 <li><a href="javascript/library/index.html">Library</a></li>
                 <li><a href="javascript/tic-tac-toe/index.html">Tic-Tac-Toe</a></li>

@@ -23,7 +23,7 @@ a:hover {
     text-shadow: #ffcc00 1px 0 10px;
 }
 
-.panels {
+.rows {
     display:flex;
     flex-direction: column;
     flex:5 1 auto;
@@ -31,8 +31,15 @@ a:hover {
     justify-content: center;
 }
 
-.panel {
+.row {
     flex:1;
-    background: linear-gradient(0deg, CadetBlue, CornflowerBlue)
+    background: linear-gradient(0deg, CadetBlue, CornflowerBlue);
 }
 
+.flex-row {  
+    display:flex;
+}
+
+.flex-row-member {
+    flex:1;
+}
