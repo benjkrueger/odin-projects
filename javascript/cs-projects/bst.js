@@ -144,24 +144,24 @@ class Tree {
         }
         postOrderTraverse(this.root)
     }
-    height(value) {
-        const nodes = [this.root]
-        let depth = 0
-        let level
-        while (nodes.length > 0) {
-            let levelSize = nodes.length
-            for (let i = 0; i < levelSize; i++) {
-                let node = nodes.shift()
-                if (node.value === value) {level = depth}
-                if (node.left !== null) {nodes.push(node.left)}
-                if (node.right !== null) {nodes.push(node.right)}
-            }
-            depth++            
-        }
-        return depth - 1
-    }
     depth(value) {
-        let h = 0
+        let depth = 0
+        let node = this.root
+        while (node != null) {
+            if (node.value === value) {return depth}
+            else if (value < node.value) {node = node.left}
+            else {node = node.right}
+            depth += 1
+        }
+        return undefined
+    }
+    height(value) {
+        function recurse(node) {
+            if (node === null) return -1
+            const left_height = recurse(node.left)
+            const right_height = recurse(node.right)
+            return Math.max(left_height, right_height) + 1
+        }
         let node = this.root
         while (value !== node.value) {
             if (value < node.value) {
@@ -171,11 +171,18 @@ class Tree {
                 if (node.right === null) {return undefined}
                 node = node.right
             }
-            h++
         }
-        return h
+        return recurse(node)
     }
-    isBalanced() {}
+    isBalanced() {
+        function child_height(node) {
+            const left = node.left
+            const right = node.right
+        }
+        let a = this.levelOrderForEach((node) => {
+            console.log(node.value, this.height(node.value))
+        })
+    }
     rebalance() {}
 }
 
@@ -186,11 +193,17 @@ const t = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
 
 t.prettyPrint()
-print(t.height(6345))
+/*print(t.height(6345))
 print(t.depth(6345))
-//print(t.height(7))
-print(t.depth(7))
-//t.postOrderForEach(printVal)
+print(t.height(8))
+print(t.depth(8))*/
+print(t.depth(25))
+print(t.depth(67))
+t.postOrderForEach((node) => {
+    print(`${node.value}  ${t.depth(node.value)} ${t.height(node.value)}`)
+    console.log(node.value, t.depth(node.value))
+})
+t.isBalanced()
 
 // Inorder Traversal: 10 20 30 100 150 200 300
 // Preorder Traversal: 100 20 10 30 200 150 300
