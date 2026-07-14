@@ -12,7 +12,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
   prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
   console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
-  div.textContent += `${prefix}${isLeft ? '└── ' : '┌── '}${node.value}\r\n`
+  div.textContent += `${prefix}${isLeft ? '└── ' : '┌── '}(${node.value}, ${node.height()})\r\n`
   prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
 }
 
@@ -33,6 +33,21 @@ class Node {
     inspect(depth, opts) {
         return this.value
     }
+
+    height() {
+        if (this.left === null && this.right === null) {return 0}
+        else if (this.left === null) {return this.right.height() + 1}
+        else if (this.right === null) {return this.left.height() + 1}
+        else {return Math.max(this.left.height(), this.right.height()) + 1}
+    }
+
+}
+
+const height_recurse = (node) => {
+    if (node === null) return -1
+    const left_height = height_recurse(node.left)
+    const right_height = height_recurse(node.right)
+    return Math.max(left_height, right_height) + 1
 }
 
 class Tree {
@@ -155,56 +170,63 @@ class Tree {
         }
         return undefined
     }
-    height(value) {
-        function recurse(node) {
-            if (node === null) return -1
-            const left_height = recurse(node.left)
-            const right_height = recurse(node.right)
-            return Math.max(left_height, right_height) + 1
+
+    
+    height(value, current = this.root) {
+        const findHeight = (node) => {
+            if (!node) return -1
+            let count = Math.max(findHeight(node.left), findHeight(node.right))
+            return count + 1
         }
-        let node = this.root
-        while (value !== node.value) {
-            if (value < node.value) {
-                if (node.left === null) {return undefined}
-                node = node.left
-            } else {
-                if (node.right === null) {return undefined}
-                node = node.right
-            }
-        }
-        return recurse(node)
+        if (current.data > value) {return this.height(value, current.left);} 
+        else if (current.data < value) {return this.height(value, current.right);} 
+        else {return findHeight(current);}
     }
     isBalanced() {
-        function child_height(node) {
-            const left = node.left
-            const right = node.right
+        const recurse = (node) => {
+            if (!node) {return true}
+            const leftHeight = node.left ? node.left.height() : -1;
+            const rightHeight = node.right ? node.right.height() : -1; 
+            
+            console.log(node, leftHeight, rightHeight, Math.abs(leftHeight - rightHeight) > 1)
+            if (Math.abs(leftHeight - rightHeight) > 1) {return false}
+            return recurse(node.left) && recurse(node.right)
         }
-        let a = this.levelOrderForEach((node) => {
-            console.log(node.value, this.height(node.value))
-        })
+        let node = this.root
+        return recurse(node)
+        
     }
-    rebalance() {}
+    rebalance() {
+        let array = []
+        t.preOrderForEach((node) => {
+            array.push(node.value)
+        })
+        array.sort()
+        this.root = this.buildTree(array)
+    }
 }
 
-const t = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-//const t = new Tree([100, 20,200,10,30,150,300])
-//t.prettyPrint()
-//t.prettyPrint()
 
-
-t.prettyPrint()
-/*print(t.height(6345))
-print(t.depth(6345))
-print(t.height(8))
-print(t.depth(8))*/
-print(t.depth(25))
-print(t.depth(67))
-t.postOrderForEach((node) => {
-    print(`${node.value}  ${t.depth(node.value)} ${t.height(node.value)}`)
-    console.log(node.value, t.depth(node.value))
-})
-t.isBalanced()
-
-// Inorder Traversal: 10 20 30 100 150 200 300
-// Preorder Traversal: 100 20 10 30 200 150 300
-// Postorder Traversal: 10 30 20 150 300 200 100
+const array = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+const t = new Tree(array)
+print(t.isBalanced())
+t.levelOrderForEach(printVal)
+print("------------")
+t.preOrderForEach(printVal)
+print("------------")
+t.postOrderForEach(printVal)
+print("------------")
+t.inOrderForEach(printVal)
+for (let i = 100; i <= 105; i++) {
+  t.insert(i)
+}
+print(t.isBalanced())
+t.rebalance()
+print(t.isBalanced())
+t.levelOrderForEach(printVal)
+print("------------")
+t.preOrderForEach(printVal)
+print("------------")
+t.postOrderForEach(printVal)
+print("------------")
+t.inOrderForEach(printVal)
