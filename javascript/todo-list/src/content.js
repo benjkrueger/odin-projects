@@ -4,13 +4,23 @@ import { todo } from "./todo.js";
 
 export const storage = new Storage()
 const content = document.getElementById('content')
-const content_array = storage.retrieve()
-const storage_array = storage.retrieve()
+let storage_array = storage.retrieve_todos()
 
-
+export function refresh_storage_array() {
+    storage_array = storage.retrieve_todos()
+}
 
 export function get_project(project_name) {
     content.replaceChildren()
+    if (project_name === null || project_name === undefined) {
+        for (const entry of storage_array) {
+            if (!entry.completed) {
+                const t = new todo(entry.title, entry.description, entry.dueDate, entry.priority, entry.completed, entry.project)
+                content.appendChild(t.toDiv())
+            }
+            
+        }
+    }
     for (const entry of storage_array) {
         if (!entry.completed && entry.project === project_name) {
             const t = new todo(entry.title, entry.description, entry.dueDate, entry.priority, entry.completed, entry.project)

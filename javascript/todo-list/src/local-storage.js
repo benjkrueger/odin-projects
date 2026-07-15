@@ -1,19 +1,25 @@
 export class Storage {
     constructor() {
-        this.array = this.retrieve()
-        console.log(this.array)
+        this.todos = this.retrieve_todos()
+        this.projects = this.retrieve_projects()
     }
 
     push(item) {
-        this.array.push(item)
-        this.save()
+        this.todos.push(item)
+        this.projects.push(item.project)
+        console.log(this.todos)
+        this.save_todos()
     }
 
-    save() {
-        localStorage.setItem('array', JSON.stringify(this.array))
+    save_todos() {
+        localStorage.setItem('todos', JSON.stringify(this.todos))
     }
 
-    retrieve() {
-        return (localStorage.getItem('array') !== null) ? JSON.parse(localStorage.getItem('array')) : []
+    retrieve_todos() {
+        return (localStorage.getItem('todos') !== null) ? JSON.parse(localStorage.getItem('todos')) : []
+    }
+
+    retrieve_projects() {
+        return []
     }
 }

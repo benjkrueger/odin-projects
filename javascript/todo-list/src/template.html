@@ -19,18 +19,24 @@
                 <textarea id="description" placeholder="Task Description"></textarea>
             </div>
             <div class="grid-row">
-                <label for="title">Title:</label>
+                <label for="date">Date:</label>
                 <input id="date" type="date" value="1994-05-04"/>
             </div>
             <div class="grid-row">
-                <label for="priority">Title:</label>
+                <label for="priority">Priority:</label>
                 <select id="priority" type="text" placeholder="Title">
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
                     <option value="Low">Low</option>
                 </select>
             </div>
-            <button id="submit-note">Submit</button>
+            <div class="grid-row">
+                <label for="projects">Project:</label>
+                <select id="projects" type="text" placeholder="Title">
+                    <option value="Default">Default</option>
+                </select>
+            </div>
+            <button id="submit-note" class="plus-button">Submit</button>
         </div>
     </div>
     <div id="container">
@@ -40,19 +46,12 @@
                 <button id="add-note">+</button>
             </div>
             
-            <div>
-                <ul>
-                    <li id="inbox">Inbox</li>
-                    <li>Today</li>
-                    <li>Tomorrow</li>
-                    <li>This Week</li>
-                    <li>This Month</li>
-                    <li>Completed</li>
-                </ul>
+            <div id="selectors">
+                
             </div>
             <div class="row">
                 <h2>Projects</h2>
-                <button id="add-project">+</button>
+                <button id="add-project" class="plus-button">+</button>
                 
             </div>
             <ul>

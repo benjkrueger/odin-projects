@@ -11,11 +11,29 @@ body {
   background-color: beige;
 }
 
-button {
+#selectors {
+  display:flex;
+  flex-direction: column;
+}
+
+.selector-button {
+  background-color:rgba(0,0,0,0);
+  padding:10px;
+  border:none;
+}
+
+.selector-button:hover {
+  background-color: rgba(0,0,0,.2);
+}
+.selector-button-active {
+  background-color: rgba(0,0,0,.3)
+}
+
+#plus-button {
   width: 50px;
 }
 
-button:hover {
+#plus-button:hover {
   background-color: red;
 }
 
