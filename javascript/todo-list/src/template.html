@@ -3,64 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To-Do List</title>
 </head>
 <body>
-    <div id="add-note-modal" class="modal-overlay">
-        <div class="modal-box">
-            <button id="closeModalBtn" class="modal-close">×</button>
-            <h3>Add To-Do</h3>
-            <div class="grid-row">
-                <label for="title">Title:</label>
-                <input id="title" type="text" placeholder="Title"/>
-            </div>
-            <div class="grid-row">
-                <label for="description">Description:</label>
-                <textarea id="description" placeholder="Task Description"></textarea>
-            </div>
-            <div class="grid-row">
-                <label for="date">Date:</label>
-                <input id="date" type="date" value="1994-05-04"/>
-            </div>
-            <div class="grid-row">
-                <label for="priority">Priority:</label>
-                <select id="priority" type="text" placeholder="Title">
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                </select>
-            </div>
-            <div class="grid-row">
-                <label for="projects">Project:</label>
-                <select id="projects" type="text" placeholder="Title">
-                    <option value="Default">Default</option>
-                </select>
-            </div>
-            <button id="submit-note" class="plus-button">Submit</button>
-        </div>
-    </div>
+    <div id="add-note-modal" class="modal-overlay"></div>
     <div id="container">
-        <div id="sidebar">
-            <div class="row">
-                <h1>Todo List</h1>
-                <button id="add-note">+</button>
-            </div>
-            
-            <div id="selectors">
-                
-            </div>
-            <div class="row">
-                <h2>Projects</h2>
-                <button id="add-project" class="plus-button">+</button>
-                
-            </div>
-            <ul>
-                <li>test</li>
-            </ul>
-        </div>
-        <div id="content">
-
-        </div>
+        <div id="sidebar"></div>
+        <div id="content"></div>
     </div>
 </body>
 </html>
