@@ -4,6 +4,7 @@ import { storage } from "./storage.js";
 import { generate_top_buttons, generate_project_buttons} from "./navbar.js";
 import { ToDo } from "./todo.js";
 import { generateModal } from "./modal.js";
+import { generate_sorter } from "./sorter.js";
 
 
 function start_fresh() {
@@ -39,10 +40,11 @@ const thirteen_days_later = () => {
     return date.toISOString().split('T')[0]
 }
 
-//start_fresh()
+start_fresh()
 
 generate_top_buttons()
 generate_project_buttons()
+generate_sorter()
 generateModal()
 
 

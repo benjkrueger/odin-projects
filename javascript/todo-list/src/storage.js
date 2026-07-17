@@ -3,7 +3,7 @@ class Storage {
         this.todos = this.retrieve_todos()
         this.projects = this.retrieve_projects()
         console.log(this.todos, this.projects)
-        this.new_id = 0
+        this.new_id = this.todos.length
     }
 
     clear() {
@@ -11,18 +11,24 @@ class Storage {
         localStorage.removeItem('projects')
         this.todos = []
         this.projects = new Set()
-        console.log("CLEAR STORAGE", localStorage.getItem('todos') )
+        this.new_id = this.todos.length
+        console.log("CLEAR STORAGE", localStorage.getItem('todos'),
+        localStorage.removeItem('projects'), this.todos, this.projects )
+    }
+
+    get(id) {
+        return this.todos[id]
     }
 
     push(item) {
-        console.log("PUSH", item)
+        console.log("PUSH", typeof item.project, item )
         if (item.project !== undefined) {this.projects.add(item.project)}
         this.todos[item.id] = item
         this.save()
         this.new_id += 1
     }
 
-    update(item) {
+    update(id, item) {
         console.log("UPDATE", item, this.todos)
         this.todos[item.id] = item
         if (!this.projects.has(this.project)) {this.projects.add(this.project)}

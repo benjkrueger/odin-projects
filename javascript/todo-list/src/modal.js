@@ -21,11 +21,9 @@ function make_grid_row(id, label_name, elem_type, input_type="", placeholder="",
     if (options) {
         if (id === "project") {
             const option = document.createElement("option")
-            option.value = null
             option.textContent = null
             input.appendChild(option)
         }
-        
         for (const option_name of options) {
             if (option_name !== null) {
                 const option = document.createElement("option")
@@ -40,10 +38,37 @@ function make_grid_row(id, label_name, elem_type, input_type="", placeholder="",
     return div
 }
 
+let add_mode = true
+let entry_id
+const modal = document.getElementById("add-note-modal")
+
+export function set_edit_mode(i) {
+    add_mode = false
+    set_modal_values(i)
+    entry_id = i
+    console.log("SET EDIT MODE", i, entry_id)
+}
+
+export function show_modal() {
+    modal.classList.add("show")
+}
+
+function set_modal_values(i) {
+    const t = storage.get(i)
+    document.getElementById("title").value = t.title
+    document.getElementById("description").value = t.description
+    document.getElementById("date").value = t.dueDate
+    document.getElementById("priority").value = t.priority
+    document.getElementById("project").value = t.project
+}
+
 export function generateModal() {
-    const modal = document.getElementById("add-note-modal")
+    
     const addNoteBtn = document.querySelector("#add-note")
-    addNoteBtn.addEventListener("click", () => {modal.classList.add("show")})
+    addNoteBtn.addEventListener("click", () => {
+        show_modal()
+        add_mode = true
+    })
 
     const div = document.createElement("div")
     div.classList.add("modal-box")
@@ -58,11 +83,13 @@ export function generateModal() {
     const header = document.createElement("h3")
     div.appendChild(header)
     //getTodaysDate()
+    //make_grid_row(id, label_name, elem_type, input_type, placeholder, value, options)
     div.appendChild(make_grid_row("title", "Title:", "input", "text", "Title"))
     div.appendChild(make_grid_row("description", "Description:", "textarea", "", "Title"))
     div.appendChild(make_grid_row("date", "Description:", "input", "date", "", getTodaysDate()))
     div.appendChild(make_grid_row("priority", "Priority:", "select", "","High", "", ["High", "Medium", "Low"]))
     div.appendChild(make_grid_row("project", "Project:", "select", "", "", "", storage.projects))
+    
     // Add Projects
 
     const submitBtn = document.createElement("button")
@@ -71,7 +98,7 @@ export function generateModal() {
     submitBtn.textContent = "Submit"
     submitBtn.addEventListener("click", () => {
         const project_value = document.getElementById('project')?.value
-        console.log(project_value, project === "null")
+        console.log("SUBMIT IS IT NULL", project_value, project === "null")
         const t = new ToDo(
             storage.new_id,
             document.getElementById("title").value,
@@ -81,35 +108,28 @@ export function generateModal() {
             project === "null" ? null : project_value,
             false
         )
-        storage.push(t)
+        if (add_mode) {storage.push(t)}
+        else {
+            console.log("EDIT MODE", storage.todos, entry_id)
+            const id = storage.get(entry_id).id
+            const t = new ToDo(
+                id,
+                document.getElementById("title").value,
+                document.getElementById("description").value,
+                document.getElementById('date').value,
+                document.getElementById('priority').value,
+                document.getElementById('project').value,
+                storage.get(entry_id).completed  
+            )
+            storage.update(id, t)
+        }
         modal.classList.remove("show")
         refresh_content()
     })
     div.appendChild(submitBtn)
 
     modal.appendChild(div)
-    /*
-    const modal = document.getElementById("add-note-modal")
-    const addNoteBtn = document.querySelector("#add-note")
-    addNoteBtn.addEventListener("click", () => {modal.classList.add("show")})
-    const closeModalBtn = document.querySelector("#closeModalBtn")
-    closeModalBtn.addEventListener("click", closeModal)
-    //addNoteBtn.click() // TODO Delete Later
-
-    const title = document.getElementById("title")
-    const description = document.getElementById("description")
-    const date = document.getElementById('date')
-    date.value = getTodaysDate()
-    const priority = document.getElementById('priority')
-    const submit = document.getElementById('submit-note')
-    const project = document.getElementById('projects')
-
-    submit.addEventListener("click", () => {
-        const t = new todo(title.value, description.value, date.value, priority.value, false, project.value)
-        storage.push(t)
-        closeModal()
-    })
-    */
+    
 
 
  

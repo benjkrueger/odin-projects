@@ -1,6 +1,7 @@
 import { storage } from "./storage.js";
 import {navArray, navButtons, navActiveIndex} from "./navbar.js"
 import { refresh_content } from "./content.js";
+import { set_edit_mode, show_modal } from "./modal.js";
 const content = document.getElementById('content')
 
 export class ToDo {
@@ -60,6 +61,8 @@ export class ToDo {
         editBtn.src = "https://kaylubr.github.io/todolist/463ff738145b243b71e9.svg"
         editBtn.addEventListener("click", () => {
             console.log("EDIT BTN CLICK")
+            set_edit_mode(this.id)
+            show_modal()
         })
 
         const delBtn = document.createElement('img')

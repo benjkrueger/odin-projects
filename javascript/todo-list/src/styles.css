@@ -5,11 +5,34 @@ body {
 #container {
   display:grid;
   grid-template-columns: 220px auto;
+  grid-template-rows: 60px auto;
+  height:100vh;
+}
+
+#sorter {
+  grid-column: 2/ 3;
+  grid-row : 1/1;
+  background-color: red;
 }
 
 #navbar {
   background-color: beige;
+  grid-column: 1/1;
+  grid-row: 1/3;
+  position: sticky;
 }
+
+#content {
+  grid-column: 2/3;
+  grid-row: 2/2;
+  background-color: antiquewhite;
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap:0px;
+  overflow-y: auto
+}
+
 
 #selectors, #project-selectors {
   display:flex;
@@ -37,14 +60,6 @@ body {
   background-color: red;
 }
 
-#content {
-  background-color: antiquewhite;
-  display:flex;
-  flex-direction: column;
-  align-items:flex-start;
-  gap:0px;
-  height:100vh;
-}
 
 .row {
   display:flex;
