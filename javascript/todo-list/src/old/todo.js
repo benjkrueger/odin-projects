@@ -10,9 +10,11 @@ export class todo {
 
     toggle_complete() {
         this.completed = !this.completed
+        console.log(this.title, this.completed)
     }
 
     toDiv() {
+        console.log("toDiv", this.title)
         const newDiv = document.createElement('div')
         const title = document.createElement('h4')
         const description = document.createElement('p')

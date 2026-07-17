@@ -1,0 +1,152 @@
+body {
+  margin:0;
+}
+
+#container {
+  display:grid;
+  grid-template-columns: 220px auto;
+}
+
+#navbar {
+  background-color: beige;
+}
+
+#selectors, #project-selectors {
+  display:flex;
+  flex-direction: column;
+}
+
+.selector-button {
+  background-color:rgba(0,0,0,0);
+  padding:10px;
+  border:none;
+}
+
+.selector-button:hover {
+  background-color: rgba(0,0,0,.2);
+}
+.selector-button-active {
+  background-color: rgba(0,0,0,.3)
+}
+
+#plus-button {
+  width: 50px;
+}
+
+#plus-button:hover {
+  background-color: red;
+}
+
+#content {
+  background-color: antiquewhite;
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap:0px;
+  height:100vh;
+}
+
+.row {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.grid-row {
+  display:grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.entry {
+  margin: 3px;
+  background-color: aliceblue;
+  display: grid;
+  grid-template-columns: 30px minmax(100px,1fr) 5fr 80px 100px 50px 30px 30px;
+  gap: 10px;
+  width: 98%;
+  padding-right:10px;
+  border-radius: 10px;
+}
+
+.entry > * {
+  align-self: center;
+}
+
+
+.low-priority {
+  background-color: green;
+  color:white;
+  align-self: center;
+  justify-self: center;
+  padding:3px;
+  border-radius:10px;
+  border: solid black 1px;
+}
+
+.medium-priority {
+  background-color: yellow;
+  color:black;
+  align-self: center;
+  justify-self: center;
+  padding:3px;
+  border-radius:10px;
+  border: solid black 1px;
+}
+
+.high-priority {
+  background-color: red;
+  color:white;
+  align-self: center;
+  justify-self: center;
+  padding:3px;
+  border-radius:10px;
+  border: solid black 1px;
+}
+
+
+/****************************
+█   █  ███  ████   ███  █     
+██ ██ █   █ █   █ █   █ █     
+█ █ █ █   █ █   █ █████ █     
+█   █ █   █ █   █ █   █ █     
+█   █  ███  ████  █   █ █████ 
+****************************/
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Show the modal */
+.modal-overlay.show {
+  display: block;
+}
+
+/* The modal box */
+.modal-box {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  display:flex;
+  flex-direction: column;
+}
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
