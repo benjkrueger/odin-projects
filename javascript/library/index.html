@@ -13,20 +13,20 @@
 
     <dialog id="my-dialog">
         <p>Add a book to the library.</p>
-        <div class="input-div">
+        <fieldset class="input-div">
             <label for="title">Title:</label>
-            <input id="title" type="text" placeholder="title">
+            <input id="title" required type="text" placeholder="title">
             <label for="author">Author:</label>
-            <input id="author" type="text" placeholder="author">
+            <input id="author" required type="text" placeholder="author">
             <label for="pages">Pages:</label>
-            <input id="pages" type="number" placeholder="0">
+            <input id="pages" required type="number" placeholder="0">
             <label for="read">Have you read this book?:</label>
             <select id="read">
                 <option value="true">Yes</option>
                 <option value="false">No</option>
             </select>
-        </div>
-        <button commandfor="my-dialog" command="close">Close</button>
+        </fieldset>
+        <button id="close" commandfor="my-dialog" command="close">Close</button>
         <button id="add-book-btn">Add Book</button>
     </dialog>
     <div id="library-container">

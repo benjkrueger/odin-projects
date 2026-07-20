@@ -72,13 +72,22 @@ class Library {
 }
 
 function getBookFromInputs() {
-    const title = document.getElementById("title").value
-    const author = document.getElementById("author").value
-    const pages = document.getElementById("pages").value
+    const title = document.getElementById("title")
+    const author = document.getElementById("author")
+    const pages = document.getElementById("pages")
     const read = (document.getElementById("read").value === "true") ? true : false
-    console.assert(!isNaN(pages))
-    if (!isNaN(pages))
-    return new Book(title, author, Number(pages), read)
+    console.assert(!isNaN(pages.values))
+    console.log(!isNaN(pages.value), title.checkValidity(), author.checkValidity())
+    console.log(!isNaN(pages) && title.checkValidity() && author.checkValidity())
+    if (!isNaN(pages.value) && title.checkValidity() && author.checkValidity() ) {
+        return new Book(title.value, author.value, Number(pages.value), read)
+    } else {
+        title.reportValidity()
+        author.reportValidity()
+        pages.reportValidity()
+        return false
+    }
+    
 }
 
 const a = new Book("The Hobbit", "J.R.R. Tolkien", 295, false)
@@ -89,6 +98,11 @@ library.addBookToLibrary(b)
 library.showLibrary()
 const addBookBtn = document.getElementById("add-book-btn")
 addBookBtn.addEventListener("click", () => {
-    library.addBookToLibrary(getBookFromInputs())
-    library.showLibrary()
+    const book = getBookFromInputs()
+    console.log(book)
+    if(book !== false) {
+        library.addBookToLibrary(book)
+        library.showLibrary()
+        document.getElementById("close").click()
+    }
 })
