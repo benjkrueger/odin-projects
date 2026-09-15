@@ -1,13 +1,15 @@
-class Ship {
-    constructor(length) {
+export class Ship {
+    constructor(length, ship_id) {
         this.length = length
+        this.ship_id = ship_id
         this.hits = 0
         this.sunk = false
     }
 
     hit() {
-        if (this.isSunk()) return
+        if (this.isSunk()) return true
         this.hits += 1
+        return false
     }
 
     isSunk() {
@@ -16,5 +18,3 @@ class Ship {
         return false
     }
 }
-
-module.exports = Ship

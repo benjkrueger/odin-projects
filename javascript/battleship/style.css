@@ -1,52 +1,87 @@
-* {
-    box-sizing:border-box
-}
-
-.divTable{
-	display: table;
-	width: 100%;
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	border: 1px solid #999999;
-	display: table-cell;
-	padding: 3px 10px;
-    width: 50px;
+.player-button {
+    width:100px;
     height: 50px;
-    position:relative;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom:10px;
 }
 
-canvas {
-    margin: 0 auto;
-    position:absolute;
-    top: 50%;
-    left:50%;
-    transform:translate(-50%, -50%);
+.player-button:disabled {
+    background-color: gray;
 }
 
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
-.divTableBody {
-	display: table-row-group;
+#log {
+    text-align:left;
 }
 
-.flex-row {
-    display:flex;
-    flex-direction: row;
-    gap:10px;
+.row {
+    display:grid;
+    grid-template-columns:1fr 500px 300px 500px 1fr; 
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.column-2 {
+    grid-column:2;
+    justify-self: center;
+}
+
+.column-3 {
+    grid-column:3;
+    padding:10px;
+    display: flex;
+    align-items:center;
+    justify-self: center;
+}
+
+.column-4 {
+    grid-column:4;
+    justify-self: center;
+}
+
+.grid-container {
+    display:grid;
+    grid-template-columns: repeat(10, 50px); 
+    grid-template-rows: repeat(10, 50px);    
+}
+
+.ship-container-v {
+    display:grid;
+    grid-template-columns: 50px; 
+    grid-template-rows: repeat(5, 50px);    
+}
+
+.ship-container-h {
+    display:grid;
+    grid-template-rows: 50px; 
+    grid-template-columns: repeat(5, 50px);    
+}
+
+.draggable-item {
+    cursor: grab;
+}
+
+.draggable-item.dragging {
+  opacity: 0.5;
+}
+
+.grid-item {
+    border: 1px solid black;
+    aspect-ratio: 1/1;
+    width: 50px;
+}
+
+.selected {
+    border-color:white;
+}
+
+.dragover {
+    border-color: white !important;
+}
+
+.dragover-invalid {
+    border-color: red !important;
+}
