@@ -1,99 +1,94 @@
-import {Board} from "./board.js"
-import { NOTHING, SIZE_DICT, HIT, MISS } from "./constants.js";
+import { Gameboard } from "./board.js"
+import { HIT, MISS } from "./constants.js"
+
+function surrounding_coords(enemy_board, coord) {
+    const [x,y] = coord
+    const ret = []
+    if (x > 0 && enemy_board.hasNotBeenShot([x-1, y])) {ret.push([x-1, y])}
+    if (x < 9 && enemy_board.hasNotBeenShot([x+1, y])) {ret.push([x+1, y])}
+    if (y > 0 && enemy_board.hasNotBeenShot([x, y-1])) {ret.push([x, y-1])}
+    if (y < 9 && enemy_board.hasNotBeenShot([x, y+1])) {ret.push([x, y+1])}
+    return ret
+}
 
 export class Player {
     constructor(id) {
         this.id = id
-        this.isHuman = true;
-        this.board = new Board();
-        this.ship_coords = []
+        this.board = new Gameboard()
+        this.isHuman = true
+        this.prospective_targets = []
+        this.shots_taken = 0
     }
-    place_ship(start, end) {
-        this.board.placeShip(this.board.turnItoXY(start), this.board.turnItoXY(end))
-        this.ship_coords.push([start, end])
-    }
-    undo_ship() {
-        const [start, end] = this.ship_coords.pop()
-        this.board.undoShip(this.board.turnItoXY(start), this.board.turnItoXY(end))
-    }
-    getCellValue(i) {return this.board.getICoord(i)}
-    setCellValue(i, value) {this.board.setICoord(i, value)}
-    getSelected(i) {return this.board.getSelected(i)}
-    allIsSunk() {return this.board.getLiveShipsNum() === 0}
-    getNumberShotsPossible() {return this.board.getLiveShipsNum()}
-    getNumberSelectedShots() {return this.board.selectedSpots.size}
-    attemptShot(i, numShots) {return this.board.attemptSelect(i, numShots)}
-    fire() {
-        const selected = this.board.selectedSpots
-        const response = []
-        for (const i of selected) {
-            const ship_sunk = this.board.handleShot(i)
-            console.log("PLAYER SHIP SUNK", ship_sunk)
-            if (ship_sunk !== NOTHING) {response.push(ship_sunk)}
+    toggleHumanity() {this.isHuman = !this.isHuman}
+    print() {this.board.print()}
+    makeAttack(enemy_board, coord) { 
+        // returns is_hit, is_sunk (or undefined)
+        const [is_hit, is_sunk] = enemy_board.receiveAttack(coord)
+        if (is_hit) {
+            if (!is_sunk) {this.prospective_targets.push(surrounding_coords(enemy_board, coord))}
         }
-        return response
+        this.shots_taken += 1
     }
+    endTurn() {
+        this.shots_taken = 0
+    }
+    generateComputerAttack(enemy_board) {
+        function get_hits(coords) {
+            const ret = [] 
+            for (const [x, y, r] of coords) {
+                if (r === HIT) {
+                    ret.push([x,y])
+                }
+            }
+            return ret
+        }
+        function get_good_coords(coords) {
+            const ret = new Set()
+            for (const coord of coords) {
+                for (const coord1 of surrounding_coords(enemy_board, coord)) {
+                    ret.add(coord1)
+                }
+            }
+            return ret
+        }
+        function get_random_coord(enemy_board) {
+            let x,y, choice
+            do {
+                x = Math.floor(Math.random()*10)
+                y = Math.floor(Math.random()*10)
+                choice = [x,y]
+                limit += 1
+            } while (limit < 100 || !enemy_board.hasNotBeenShot([x,y]))
+            return choice
+        }
+
+        const coords_attacked = enemy_board.coords_attacked
+        const coords_hit = get_hits(coords_attacked)
+        const good_coords = get_good_coords(coords_hit)
+        let choice,x,y
+        let limit = 100
+        if (good_coords.size == 0) {
+            choice = get_random_coord(enemy_board)
+        } else {
+            const coord_array = [...good_coords]
+            if (Math.random() < 0.9) {choice = coord_array[Math.floor(Math.random() * coord_array.length)]}
+            else {choice = get_random_coord(enemy_board)}
+        }
+        this.makeAttack(enemy_board, choice)
+    }
+    placeShip(start_coord, end_coord) {this.board.placeShip(start_coord, end_coord)}
+    getNumShips() {return Object.keys(this.board.ships).length}
+    getNumSelected() {return this.board.selected.size}
+    clearSelected() {this.board.clearSelected()}
+    handleFire() {return this.board.handleFire()}
+    allShipsSunk() {
+        return this.board.allShipsSunk()
+    }
+    undoPlacement() {this.board.undo_last_ship()}
     reset() {
-        this.board.reset();
+        this.board = new Gameboard()
+        this.shots_taken = 0
+        this.prospective_targets = []
     }
-    ai_place_ships() {
-        function get_coords(board, len) {
-            let v = Math.random() < 0.5
-            let x1, y1, x2, y2
-            if (v) {
-                x1 = Math.floor(Math.random() * 10)
-                y1 = Math.floor(Math.random() * (10 - len))
-                x2 = x1
-                y2 = y1 + len - 1
-            } else {
-                y1 = Math.floor(Math.random() * 10)
-                x1 = Math.floor(Math.random() * (10 - len))
-                y2 = y1
-                x2 = x1 + len - 1
-            }
-            if (!board.validateShip([x1, y1], [x2, y2])) {
-                return get_coords(board, len)
-            }
-            return [x1, y1, x2, y2]
-        }
-
-        let [x1, y1, x2, y2] = get_coords(this.board, 5);
-        console.log(x1, y1, x2, y2, this.board);
-        this.board.placeShip([x1,y1], [x2,y2]);
-        this.ship_coords.push([[x1,y1], [x2,y2]]);
-        [x1, y1, x2, y2] = get_coords(this.board, 4);
-        this.board.placeShip([x1,y1], [x2,y2]);
-        this.ship_coords.push([[x1,y1], [x2,y2]]);
-        [x1, y1, x2, y2] = get_coords(this.board, 3);
-        this.board.placeShip([x1,y1], [x2,y2]);
-        this.ship_coords.push([[x1,y1], [x2,y2]]);
-        [x1, y1, x2, y2] = get_coords(this.board, 3);
-        this.board.placeShip([x1,y1], [x2,y2]);
-        this.ship_coords.push([[x1,y1], [x2,y2]]);
-        [x1, y1, x2, y2] = get_coords(this.board, 2);
-        this.board.placeShip([x1,y1], [x2,y2]);
-        this.ship_coords.push([[x1,y1], [x2,y2]]);
-    }
-    ai_place_shots(enemy_player) {
-        console.log(this.id, "PLAYER AI SHOOT")
-        const enemy_board = enemy_player.board
-        function get_coord() {
-            let i = Math.floor(Math.random() * 100)
-            if (enemy_board.getSelected(i) === MISS || enemy_board.getSelected(i) === HIT) {
-                return get_coord()
-            }
-            return i
-
-        }
-        const coords = []
-        const response = []
-        for (let i = 0; i < this.getNumberShotsPossible(); i++) {
-            coords.push(get_coord())
-            enemy_board.attemptSelect(coords[i])
-            const ship_sunk = enemy_board.handleShot(coords[i])
-            if (ship_sunk !== NOTHING) {response.push(ship_sunk)}
-        }
-        console.log(enemy_board, this.board.selectedSpots)
-        return response
-    }
+    aiPlaceShip() {this.board.aiPlaceShip()}
 }

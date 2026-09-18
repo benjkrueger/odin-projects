@@ -1,20 +1,14 @@
 export class Ship {
-    constructor(length, ship_id) {
+    constructor(id, length, coords) {
         this.length = length
-        this.ship_id = ship_id
+        this.id = id
         this.hits = 0
-        this.sunk = false
+        this.coords = coords
     }
-
     hit() {
-        if (this.isSunk()) return true
         this.hits += 1
-        return false
     }
-
     isSunk() {
-        if (this.sunk) return true
-        if (this.hits === this.length) return true
-        return false
+        return this.hits >= this.length
     }
 }

@@ -1,131 +1,158 @@
-import {NOTHING, MISS, HIT, ALL_SHIPS, SHIP1} from "./constants.js"
+import { NOTHING, HIT, MISS, SHIP1 } from "./constants.js";
 import {Ship} from "./ship.js"
 
-
-export class Board {
+export class Gameboard {
     constructor(size=10) {
         this.size = size
-        this.board = Array(size*size).fill(0);
-        this.selectedBoard = Array(size*size).fill(false);
+        this.board = Array.from({ length: 10 }, () => Array(10).fill(NOTHING));
+        this.coords_attacked = []
         this.ships = {}
-        this.numSelected = 0
-        this.selectedSpots = new Set()
+        this.selected = new Set()
+    }
+    getValue(coord) {
+        const [x, y] = coord
+        console.assert(x >= 0 && x < 10 && y < 10 && y >= 0)
+        return this.board[y][x]
+    }
+    getValueByI(i) {
+        const x = i % this.size
+        const y = Math.floor(i / this.size)
+        return this.board[y][x]
+    }
+    getItoCoord(i) {
+        const x = i % this.size
+        const y = Math.floor(i / this.size)
+        return [x,y]
+    }
+    isEmptyI(i) {
+        return this.getValueByI(i) === NOTHING
+    }
+    hasNotBeenShot(coord) {
+        const [x, y] = coord
+        return (this.board[y][x] !== MISS && this.board[y][x] !== HIT)
+    }
+    print() {
+        console.table(this.board)
     }
     reset() {
-        this.board = Array(this.size*this.size).fill(0);
-        this.selectedBoard = Array(this.size*this.size).fill(false);
+        this.board = Array.from({ length: 10 }, () => Array(10).fill(NOTHING));
+        this.coords_attacked = []
         this.ships = {}
-        this.numSelected = 0
-        this.selectedSpots = new Set()
+        this.selected = new Set()
     }
-    getLiveShipsNum() {
-        let n = 0
-        for (const [shipId, ship] of Object.entries(this.ships)) {
-            if (!ship.isSunk()) {n += 1}
+    numAliveShips() {
+        let i = 0
+        for (ship of Array.from(this.ships)) {
+            if (!ship.isSunk()) {i++}
         }
-        return n
+        return i
     }
-    toggleSelect(i) {
-        this.numSelected = this.selectedBoard[i] ? this.numSelected -1 : this.numSelected + 1
-        this.selectedBoard[i] = !this.selectedBoard[i]
-        if (this.selectedBoard[i]) {
-            this.selectedSpots.add(i)
-        } else {
-            this.selectedSpots.delete(i)
+    allShipsSunk() {
+        for (const ship of Object.values(this.ships)) {
+            if (!ship.isSunk()) {return false}
         }
+        return true
     }
-    getSelected(i) {return this.selectedBoard[i]}
-    getNewShipId() {
-        return Object.keys(this.ships).length + SHIP1
-    }
-    turnItoXY(i) {
-        return [i % 10, Math.floor(i / 10)]
-    }
-    getXYCoord(x,y) {return this.board[(y*this.size) + x]}
-    setXYCoord(x,y,value) {this.board[(y*this.size) + x] = value}
-    getICoord(i) {return this.board[i]}
-    setICoord(i,value) {this.board[i] = value}
-    validateShip(startCoord, endCoord) {
-        const [x1, y1] = startCoord
-        const [x2, y2] = endCoord
+    emptyCoords(start_coord, end_coord) {
+        const [x1, y1] = start_coord
+        const [x2, y2] = end_coord
+        console.assert(x1 === x2 || y1 === y2)
         if (x1 === x2) {
-            const shipLength = y2 - y1 +1
             for (let i = y1; i <= y2; i++) {
-                if (this.getXYCoord(x1, i) !== NOTHING) {
+                this.board[i][x1] = NOTHING
+            }
+        } else if (y1 === y2) {
+            for (let i = x1; i <= x2; i++) {
+                this.board[y1][i] = NOTHING
+            }
+        } else {
+            console.error(`How did you make it past the assertion: [${x1}, ${y1}] -> [${x2}, ${y2}]`)
+            return false
+        }
+    }
+    placeShipI(start_i, end_i) {
+        this.placeShip(this.getItoCoord(start_i), this.getItoCoord(end_i))
+    }
+    placeShip(start_coord, end_coord) {
+        const [x1, y1] = start_coord
+        const [x2, y2] = end_coord
+        const id = SHIP1 + Object.keys(this.ships).length
+        console.assert(x1 === x2 || y1 === y2)
+        if (x1 === x2) {
+            for (let i = y1; i <= y2; i++) {
+                if (this.board[i][x1] !== NOTHING) {
+                    console.error(`Invalid placement at [${x1}, ${i}] = ${this.board[i][x1]}`)
                     return false
                 }
             }
-            return true
+            for (let i = y1; i <= y2; i++) {
+                this.board[i][x1] = id
+            }
+            this.ships[id] = new Ship(id, y2-y1+1, {start_coord, end_coord})
         } else if (y1 === y2) {
-            const shipLength = x2 - x1 +1
             for (let i = x1; i <= x2; i++) {
-                if (this.getXYCoord(i, y1) !== NOTHING) {
+                if (this.board[y1][i] !== NOTHING) {
+                    console.error(`Invalid placement at [${i}, ${y1}] = ${this.board[y1][i]}`)
                     return false
                 }
             }
-            return true
-        } else {throw Error(`Invalid Coordinates ${startCoord}, ${endCoord}`)}
-    }
-    placeShip(startCoord, endCoord) {
-        console.log(startCoord, endCoord)
-        const shipId = this.getNewShipId()
-        const [x1, y1] = startCoord
-        const [x2, y2] = endCoord
-        if (x1 === x2) {
-            const shipLength = y2 - y1 +1
-            for (let i = y1; i <= y2; i++) {
-                this.setXYCoord(x1, i, shipId)
-            }
-            this.ships[shipId] = new Ship(shipLength, shipId)
-        } else if (y1 === y2) {
-            const shipLength = x2 - x1 +1
             for (let i = x1; i <= x2; i++) {
-                this.setXYCoord(i, y1, shipId)
+                this.board[y1][i] = id
             }
-            this.ships[shipId] = new Ship(shipLength, shipId)
-        } else {throw Error(`Invalid Coordinates ${startCoord}, ${endCoord}`)}
-    }
-    undoShip(startCoord, endCoord) {
-        const shipId = this.getNewShipId() - 1
-        const [x1, y1] = startCoord
-        const [x2, y2] = endCoord
-        if (x1 === x2) {
-            const shipLength = y2 - y1 +1
-            for (let i = y1; i <= y2; i++) {
-                this.setXYCoord(x1, i, NOTHING)
-            }
-            delete this.ships[shipId]
-        } else if (y1 === y2) {
-            const shipLength = x2 - x1 +1
-            for (let i = x1; i <= x2; i++) {
-                this.setXYCoord(i, y1, NOTHING)
-            }
-            delete this.ships[shipId]
-        } else {throw Error(`Invalid Coordinates ${startCoord}, ${endCoord}`)}
-    }
-    attemptSelect(i, numShots) {
-        if (![MISS, HIT].includes(this.getICoord(i))) {
-            if (this.numSelected < numShots) {
-                this.toggleSelect(i)
-            } else if (this.getSelected(i)) {
-                this.toggleSelect(i)
-            }
-        }
-    }
-    handleShot(i) {
-        this.toggleSelect(i)
-        const cellValue = this.getICoord(i)
-        if (cellValue === NOTHING) {
-            this.setICoord(i, MISS)
-        } else if (ALL_SHIPS.includes(cellValue)) {
-            const ship = this.ships[cellValue]
-            ship.hit()
-            this.setICoord(i, HIT)
-            const ship_got_sunk = ship.isSunk()
-            console.log("BOARD: ship sunk", ship_got_sunk, ship.shipId)
-            return ship_got_sunk ? ship.ship_id : NOTHING
+            this.ships[id] = new Ship(id, x2-x1+1, {start_coord, end_coord})
         } else {
-            throw Error(`SOMETHING WEIRD HAPPENED IN HANDLE SHOT ${cellValue}`)
-        }
+            console.error(`How did you make it past the assertion: [${x1}, ${y1}] -> [${x2}, ${y2}]`)
+            return false
+        } 
+        return true
     }
+    undo_last_ship() {
+        if (Object.keys(this.ships).length < 1) {
+            console.error("No ship to remove")
+            return
+        }
+        const id_to_remove = SHIP1 + Object.keys(this.ships).length - 1
+        const start_coord = this.ships[id_to_remove].coords.start_coord
+        const end_coord = this.ships[id_to_remove].coords.end_coord
+        this.emptyCoords(start_coord, end_coord)
+        delete this.ships[id_to_remove]
+    }
+    receiveAttack(coord) {
+        // returns is_hit, is_sunk (or undefined)
+        const [x, y] = coord
+        const board_value = this.board[y][x]
+        if (board_value === HIT || board_value === MISS) {
+            console.error(`Received Attack - already attacked coordinate: [${x}, ${y}] - ${this.board[y][x]}`);
+        } else if (board_value === NOTHING) {
+            this.coords_attacked.push([x,y,MISS])
+            this.board[y][x] = MISS
+        } else if (board_value >= SHIP1) {
+            this.coords_attacked.push([x,y,HIT])
+            this.ships[board_value].hit()
+            this.board[y][x] = HIT
+            return [true, this.ships[board_value].isSunk()]
+        } else {
+            console.error(`Received Attack - Unexpected value at: [${x}, ${y}] - ${this.board[y][x]}`);
+        }
+        return [false, undefined]
+    }
+    handleFire() {
+        const ret = []
+        for (const i of this.selected) {
+            ret.push(this.receiveAttack(this.getItoCoord(i)))
+        }
+        return ret
+    }
+    receiveSelectI(i, max_shots) {
+        const [x,y] = this.getItoCoord(i)
+        if (this.selected.has(i)) {
+            this.selected.delete(i);
+            return false;
+        } else if (this.selected.size < max_shots && this.hasNotBeenShot([x,y])) {
+            this.selected.add(i);
+            return true;
+        } else {return false;}
+    }
+    clearSelected() {this.selected = new Set()}
+    getNumSelected() {return this.selected.size}
 }
