@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import Greeting from "./Greeting.jsx"
-import './index.css'
+import './styles/index.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -9,4 +8,3 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
-
