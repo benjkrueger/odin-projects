@@ -1,0 +1,45 @@
+* {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1 {
+    font-family:'Century Gothic';
+}
+
+.list_holder {
+    list-style-type:none;
+}
+
+ol {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+a {
+    color:DarkGray;
+}
+
+a:hover {
+    text-shadow: #ffcc00 1px 0 10px;
+}
+
+.rows {
+    display:flex;
+    flex-direction: column;
+    flex:5 1 auto;
+    height:100vh;
+    justify-content: center;
+}
+
+.row {
+    flex:1;
+    background: linear-gradient(0deg, CadetBlue, CornflowerBlue);
+}
+
+.flex-row {  
+    display:flex;
+}
+
+.flex-row-member {
+    flex:1;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" type="module" defer></script>
+</head>
+<body>
+    <div class="row">
+        <h2 class="column-2">Player 1</h2>
+        <h2 class="column-4">Player 2</h2>
+    </div>
+    <div class="row">
+        <button id="player1-human-button" class="human-button column-2">Human</button>
+        <button id="player2-human-button" class="human-button column-4">Human</button>
+    </div>
+    <div class="row">
+        
+    </div>
+    <div class="row">
+        <div id="player1-grid" class="grid-container column-2"></div>
+        <div class="column column-3"> 
+            <button id="game-button" class="human-button column-3">Start Game</button>
+            <div class="ship-container-h draggable-item" id="ship1-h" draggable="true"></div>
+            <p id="message"></p>
+            <div class="ship-container-v draggable-item" id="ship1-v" draggable="true"></div>
+        </div>   
+        <div id="player2-grid" class="grid-container column-4"></div>
+    </div>
+    <div class = "row">
+        <p id="log" class="column-3"></p>
+    </div>
+    
+    
+    
+</body>
+</html>

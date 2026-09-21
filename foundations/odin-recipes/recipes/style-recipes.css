@@ -1,0 +1,41 @@
+* {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+body {
+    
+    background-color: aliceblue;
+}
+
+h1 {
+    font-family:'Century Gothic';
+}
+
+#ingredients {
+    background-color: antiquewhite;
+}
+
+#steps {
+    background-color: antiquewhite;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+}
+
+img {
+    width:100%;
+    object-fit:contain;
+}
+
+@media only screen and (min-width: 981px) {
+  .container {
+    grid-template-columns: 30% 30% 30%;
+    grid-row-gap: 50px;
+  }
+  .container > div {
+    padding: 30px;
+  }
+}

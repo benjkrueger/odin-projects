@@ -1,0 +1,39 @@
+.input {
+    flex-grow:2;
+    flex-basis:0;
+}
+
+.op {
+    flex:1 0 0;
+}
+
+.holder {
+    flex-grow:1;
+    flex-basis:0;
+}
+
+#calculator {
+    display:flex;
+    flex-direction: column;
+}
+
+.row {
+    display:flex;
+    width:50%;
+    align-items:center;
+}
+
+.op, .holder, .input {
+    font-size: 19px;
+}
+
+.button {
+    display:flex;
+    flex-grow:1;
+    flex-basis:0;
+    font-size: 19px;
+    padding:16px;
+    background-image: linear-gradient(to right, rgb(28, 110, 164) 0%, rgb(35, 136, 203) 50%, rgb(20, 78, 117) 100%); 
+    box-shadow: rgb(0, 0, 0) 5px 5px 15px 5px; 
+    border: 2px solid rgb(28, 110, 164);
+}
