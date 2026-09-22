@@ -1,0 +1,149 @@
+:root {
+    --green:#327836;
+}
+
+@font-face {
+    font-family: 'Norse';
+    src: url('./Norse.otf') format('opentype');
+    font-weight:normal;
+    font-style:normal;
+}
+
+@font-face {
+    font-family: 'Norse';
+    src: url('./Norsebold.otf') format('opentype');
+    font-weight:bold;
+    font-style:normal;
+}
+
+body {
+    color: black;
+    font-family: 'Century Gothic', 'helvetica neue', sans-serif;
+}
+
+#container {
+    display:flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+#left-side {
+    background-image: url("./leaves.avif");
+    font-family:'Norse';
+    font-weight: 100;
+    font-size: 50px;
+    background-size: cover;
+    flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
+    color:white
+}
+
+#left-side::before {
+    content:"";
+    flex: 0 0 25%;
+}
+
+#logo {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0 0 0 / 50%);
+    height: 100px;
+    padding:10px;
+}
+
+#logo img {
+    max-height:90%;
+}
+
+#right-side {
+    background-color: whitesmoke;
+    background-size: cover;
+    flex: 2 0 0;
+    display: flex;
+    flex-direction: column;
+    color:black;
+}
+
+#right-side div {
+    flex: 1;
+    padding:20px;
+}
+
+#right-side p {
+    font-weight: 700;
+}
+
+#top {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#form-div {
+    background-color:white;
+}
+
+
+#user-registration-form {
+    padding:0px;
+    margin:0px;
+}
+
+#user-registration-fieldset{
+    display: flex;
+    flex-wrap: wrap;
+    border:0px;
+    padding:0px;
+    margin:0px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.form-input{
+    flex-basis: 50%;
+}
+
+.form-input label {
+    display:block;
+    font-size:x-small;
+    color:rgba(97, 95, 95);
+    font-weight:600;
+    text-transform: uppercase;
+}
+
+
+
+.form-input input:user-valid {
+    border-color:green;
+}
+
+.form-input input:user-invalid {
+    border-color:red;
+}
+
+.form-input input::selection {
+    border-color:blue;
+}
+
+#submit {
+    background-color: forestgreen;
+    color: white;
+    padding: 5px 30px 5px 30px;
+    font-family: 'Century Gothic', 'helvetica neue', sans-serif;
+    font-weight: 700;
+}
+
+#bottom {
+
+}
+
+
+
+a {
+    color:forestgreen;
+    text-decoration: none;
+}
